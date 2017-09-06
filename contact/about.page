@@ -7,6 +7,14 @@ version: 2.0.0
 dependency: {"extension":["asset","block","page"]}
 ...
 
+Open `lot\extend\plugin\lot\worker\contact\lot\state\config.php` to configure:
+
+~~~ .php
+[
+    'email' => 'email@domain.com'
+]
+~~~
+
 Add this block to the page where you want the contact form to be visible:
 
 ~~~ .txt

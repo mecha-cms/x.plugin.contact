@@ -25,11 +25,11 @@ return [
     'user_agent_x' => [], // Block by user agent word(s)
     'style' => [
         'spacing' => 2,
-        'background' => ['#def', '#cde'],
+        'background' => ['#eee', '#cde'],
         'color' => '#000',
         'font' => [
             'size' => 13,
-            'face' => 'Helmet,FreeSans,sans-serif'
+            'face' => 'Helmet, FreeSans, sans-serif'
         ],
         'text' => [
             'align' => 'left'

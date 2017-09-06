@@ -110,7 +110,7 @@ Route::set('%*%/' . $state['path'], function($path) use($language, $url, $site, 
     $id = time();
     $anchor = $state['anchor'];
     $data = [
-        'date' => (new Date($id))->F4,
+        'date' => (new Date($id))->F2,
         'title' => $title,
         'author' => $author,
         'email' => $email,
@@ -118,14 +118,14 @@ Route::set('%*%/' . $state['path'], function($path) use($language, $url, $site, 
         'content' => $content
     ];
     $style = $state['style'];
-    ob_start();
-    require __DIR__ . DS . '..' . DS . 'content.php';
-    Message::send($email, $state['email'], To::text(__replace__($state['topic'], [
-        'page' => $page,
-        'site' => $site
-    ])), ob_get_clean());
     Hook::fire('on.contact.set', [null, null, [$data]]);
     if (!Message::$x) {
+        ob_start();
+        require __DIR__ . DS . '..' . DS . 'content.php';
+        Message::send($email, $state['email'], To::text(__replace__($state['topic'], [
+            'page' => $page,
+            'site' => $site
+        ])), ob_get_clean());
         Message::success('contact_create');
         Session::set('contact', $data);
         Guardian::kick(Request::post('kick', Path::D($url->current) . '#' . $anchor[1]));
