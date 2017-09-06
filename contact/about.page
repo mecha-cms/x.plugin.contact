@@ -1,0 +1,32 @@
+---
+title: Contact
+description: Contact form.
+author: Taufik Nurrohman
+type: Markdown
+version: 2.0.0
+dependency: {"extension":["asset","block","page"]}
+...
+
+Add this block to the page where you want the contact form to be visible:
+
+~~~ .txt
+[‌[‌contact‌]‌]
+~~~
+
+Set a `kick` attribute to determine custom destination page once the message successfully sent:
+
+~~~ .txt
+[‌[‌contact kick="http://localhost/thank-you"‌]‌]
+~~~
+
+Set a `topic` attribute to disallow users to set their own topic in the contact form. The value accept string or array of topic:
+
+~~~ .txt
+[‌[‌contact topic="Say Ew!"‌]‌]
+~~~
+
+~~~ .txt
+[‌[‌contact topic="{\"Topic 1\":\"Label for Topic 1\",\"Topic 2\":\"Label for Topic 2\"}"‌]‌]
+~~~
+
+<!-- block:donate -->

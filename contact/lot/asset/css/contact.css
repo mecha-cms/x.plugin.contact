@@ -1,0 +1,48 @@
+.form-contact {
+  clear:both;
+  padding-bottom:.5em;
+}
+.form-contact > p,
+.form-contact > .p {
+  margin:0;
+  padding:.5em 0;
+}
+.form-contact p:after,
+.form-contact .p:after {
+  content:"";
+  display:table;
+  clear:both;
+}
+.form-contact p > label,
+.form-contact .p > label {
+  float:left;
+  width:4em;
+  text-align:right;
+}
+.form-contact p > label,
+.form-contact .p > label,
+.form-contact p > label + span,
+.form-contact .p > label + span,
+.form-contact p > label + div,
+.form-contact .p > label + div {
+  display:block;
+  margin:0 0 0 5em;
+  padding:0;
+}
+.form-contact p > label,
+.form-contact .p > label {margin-left:0}
+.form-contact-button > label {visibility:hidden}
+.form-contact .button,
+.form-contact .input,
+.form-contact .select,
+.form-contact .textarea {
+  display:inline-block;
+  -webkit-box-sizing:border-box;
+  -moz-box-sizing:border-box;
+  box-sizing:border-box;
+}
+.form-contact .block {
+  display:block;
+  width:100%;
+}
+.form-contact .messages {margin-bottom:.5em}

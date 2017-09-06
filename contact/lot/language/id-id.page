@@ -1,0 +1,31 @@
+---
+type: YAML
+...
+
+contact: Kontak
+contacts: Kontak
+
+contact_title: Subjek
+contact_author: Nama
+contact_content: Pesan
+contact_email: Surel
+contact_link: URL
+contact_submit: Kirim
+
+contact_f_title: Hai!
+contact_f_author: Anonim
+contact_f_email: email@domain.com
+contact_f_link: http://
+contact_f_content: Pesan di sini…
+
+message_error_contact_duplicate: Anda sudah mengirimkan pesan itu.
+message_error_contact_token: Token tidak valid.
+message_error_contact_max: %{0}% terlalu panjang.
+message_error_contact_min: %{0}% terlalu pendek.
+message_error_contact_pattern_field: Pola %{0}% tidak valid.
+message_error_contact_query_x: Mohon gunakan kata yang lain: <em>%{0}%</em>.
+message_error_contact_user_agent_x: Agen pengguna diblokir: <em>%{0}%</em>.
+message_error_contact_user_ip_x: Alamat IP diblokir: <em>%{0}%</em>.
+message_error_contact_void_field: Mohon isi bidang %{0}%.
+
+message_success_contact_create: Pesan terkirim.
