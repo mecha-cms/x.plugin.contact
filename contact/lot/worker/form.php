@@ -1,7 +1,21 @@
 <form class="form-contact" id="<?php echo $anchor[1]; ?>" action="<?php echo $url->current; ?>/<?php echo Plugin::state('contact', 'path'); ?>" method="post">
   <?php echo $message; ?>
   <?php echo Form::hidden('token', $token); ?>
-  %{topic}%
+  <?php if (isset($lot['topic'])): ?>
+  <?php if (is_array($lot['topic'])): ?>
+  <p class="form-contact-select form-contact-select:title">
+    <label for="form-contact-select:title"><?php echo $language->contact_title; ?></label>
+    <span><?php echo Form::select('*title', array_merge(["" => $language->contact_f_title], $b['topic']), null, ['classes' => ['select', 'block'], 'id' => 'form-contact-select:title']); ?></span>
+  </p>
+  <?php else: ?>
+  <?php echo Form::hidden('title', $lot['topic']); ?>
+  <?php endif; ?>
+  <?php else: ?>
+  <p class="form-contact-input form-contact-input:title">
+    <label for="form-contact-input:title"><?php echo $language->contact_title; ?></label>
+    <span><?php echo Form::text('*title', null, $language->contact_f_title, ['classes' => ['input', 'block'], 'id' => 'form-contact-input:title']); ?></span>
+  </p>
+  <?php endif; ?>
   <p class="form-contact-input form-contact-input:author">
     <label for="form-contact-input:author"><?php echo $language->contact_author; ?></label>
     <span><?php echo Form::text('*author', null, $language->contact_f_author, ['classes' => ['input', 'block'], 'id' => 'form-contact-input:author']); ?></span>
@@ -18,7 +32,9 @@
     <label for="form-contact-textarea:content"><?php echo $language->contact_content; ?></label>
     <div><?php echo Form::textarea('*content', null, $language->contact_f_content, ['classes' => ['textarea', 'block'], 'id' => 'form-contact-textarea:content']); ?></div>
   </div>
-  %{kick}%
+  <?php if (isset($lot['kick'])): ?>
+  <?php echo Form::hidden('kick', $lot['kick']); ?>
+  <?php endif; ?>
   <p class="form-contact-button form-contact-button:state">
     <label for="form-contact-button:state"></label>
     <span><?php echo Form::submit('state', null, $language->contact_submit, ['classes' => ['button', 'button-submit', 'set'], 'id' => 'form-contact-button:state']); ?></span>

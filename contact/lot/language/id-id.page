@@ -18,7 +18,7 @@ contact_f_email: email@domain.com
 contact_f_link: http://
 contact_f_content: Pesan di sini…
 
-message_error_contact_duplicate: Anda sudah mengirimkan pesan itu.
+message_error_contact_duplicate: Anda sudah mengirimkan pesan tersebut.
 message_error_contact_token: Token tidak valid.
 message_error_contact_max: %{0}% terlalu panjang.
 message_error_contact_min: %{0}% terlalu pendek.
