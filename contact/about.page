@@ -3,8 +3,12 @@ title: Contact
 description: Contact form.
 author: Taufik Nurrohman
 type: Markdown
-version: 2.0.1
-dependency: {"extension":["asset","block","page"]}
+version: 2.1.0
+dependency:
+  extension:
+    - asset
+    - block
+    - page
 ...
 
 Open `lot\extend\plugin\lot\worker\contact\lot\state\config.php` to configure:
