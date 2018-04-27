@@ -2,26 +2,24 @@
 
 // Send a message!
 $state = Plugin::state('contact');
-Route::set('%*%/' . $state['path'], function($path) use($language, $url, $site, $state) {
+Route::set('%*%/' . $state['path'], function($path) use($date, $language, $site, $state, $url) {
     if (empty($state['email'])) {
         Guardian::abort('Missing email recipient.');
     }
-    $page = PAGE . DS . $path;
-    $page = File::exist([
-        $page . '.page',
-        $page . '.archive'
-    ]);
-    if (!Request::is('post') || !$page) {
+    if (!HTTP::is('post') || !$page = File::exist([
+        PAGE . DS . $path . '.page',
+        PAGE . DS . $path . '.archive'
+    ])) {
         Guardian::kick($path);
     }
     $page = new Page($page);
-    $token = Request::post('token', false);
-    $title = Request::post('title', false);
-    $author = Request::post('author', false);
-    $email = Request::post('email', false);
-    $link = Request::post('link', false);
-    $type = Request::post('type', $state['page']['type']);
-    $content = Request::post('content', false);
+    $token = HTTP::post('token', false);
+    $title = HTTP::post('title', false);
+    $author = HTTP::post('author', false);
+    $email = HTTP::post('email', false);
+    $link = HTTP::post('link', false);
+    $type = HTTP::post('type', $state['contact']['type']);
+    $content = HTTP::post('content', false);
     if (!$token || !Guardian::check($token)) {
         Message::error('contact_token');
     }
@@ -29,27 +27,27 @@ Route::set('%*%/' . $state['path'], function($path) use($language, $url, $site, 
         Message::error('contact_void_field', $language->contact_author);
     } else {
         $author = To::text($author);
-        if (Is::this($author)->gt($state['max']['author'])) {
+        if (Is::this($author)->GT($state['max']['author'])) {
             Message::error('contact_max', $language->contact_author);
-        } else if (Is::this($author)->lt($state['min']['author'])) {
+        } else if (Is::this($author)->LT($state['min']['author'])) {
             Message::error('contact_min', $language->contact_author);
         }
     }
     if (!$email) {
         Message::error('contact_void_field', $language->contact_email);
-    } else if (!Is::email($email)) {
+    } else if (!Is::EMail($email)) {
         Message::error('contact_pattern_field', $language->contact_email);
-    } else if (Is::this($email)->gt($state['max']['email'])) {
+    } else if (Is::this($email)->GT($state['max']['email'])) {
         Message::error('contact_max', $language->contact_email);
-    } else if (Is::this($email)->lt($state['min']['email'])) {
+    } else if (Is::this($email)->LT($state['min']['email'])) {
         Message::error('contact_min', $language->contact_email);
     }
     if ($link) {
-        if (!Is::url($link)) {
+        if (!Is::URL($link)) {
             Message::error('contact_pattern_field', $language->contact_link);
-        } else if (Is::this($link)->gt($state['max']['link'])) {
+        } else if (Is::this($link)->GT($state['max']['link'])) {
             Message::error('contact_max', $language->contact_link);
-        } else if (Is::this($link)->lt($state['min']['link'])) {
+        } else if (Is::this($link)->LT($state['min']['link'])) {
             Message::error('contact_min', $language->contact_link);
         }
     }
@@ -61,14 +59,14 @@ Route::set('%*%/' . $state['path'], function($path) use($language, $url, $site, 
             // Replace new line with `<br>` tag
             $content = '<p>' . str_replace(["\n\n", "\n"], ['</p><p>', '<br>'], $content) . '</p>';
         } else {
-            $fn = 'From::' . __c2f__($type);
+            $fn = 'From::' . $type;
             if (is_callable($fn)) {
                 $content = call_user_func($fn, $content);
             }
         }
-        if (Is::this($content)->gt($state['max']['content'])) {
+        if (Is::this($content)->GT($state['max']['content'])) {
             Message::error('contact_max', $language->contact_content);
-        } else if (Is::this($content)->lt($state['min']['content'])) {
+        } else if (Is::this($content)->LT($state['min']['content'])) {
             Message::error('contact_min', $language->contact_content);
         }
     }
@@ -78,7 +76,7 @@ Route::set('%*%/' . $state['path'], function($path) use($language, $url, $site, 
     } else {
         // Block user by IP address
         if (!empty($state['user_ip_x'])) {
-            $ip = Get::ip();
+            $ip = Get::IP();
             foreach ($state['user_ip_x'] as $v) {
                 if ($ip === $v) {
                     Message::error('contact_user_ip_x', $ip);
@@ -88,7 +86,7 @@ Route::set('%*%/' . $state['path'], function($path) use($language, $url, $site, 
         }
         // Block user by UA keyword(s)
         if (!empty($state['user_agent_x'])) {
-            $ua = Get::ua();
+            $ua = Get::UA();
             foreach ($state['user_agent_x'] as $v) {
                 if (stripos($ua, $v) !== false) {
                     Message::error('contact_user_agent_x', $ua);
@@ -110,7 +108,6 @@ Route::set('%*%/' . $state['path'], function($path) use($language, $url, $site, 
     $id = time();
     $anchor = $state['anchor'];
     $data = [
-        'date' => (new Date($id))->F2,
         'title' => $title,
         'author' => $author,
         'email' => $email,
@@ -123,14 +120,19 @@ Route::set('%*%/' . $state['path'], function($path) use($language, $url, $site, 
         ob_start();
         require __DIR__ . DS . '..' . DS . 'content.php';
         Message::send($email, $state['email'], To::text(__replace__($state['topic'], [
+            'config' => $site,
+            'date' => $date,
+            'language' => $language,
             'page' => $page,
-            'site' => $site
+            'site' => $site,
+            'url' => $url,
+            'u_r_l' => $url
         ])), ob_get_clean());
         Message::success('contact_create');
         Session::set('contact', $data);
-        Guardian::kick(Request::post('kick', Path::D($url->current) . '#' . $anchor[1]));
+        Guardian::kick(HTTP::post('kick', Path::D($url->current) . '#' . $anchor[1]));
     } else {
-        Request::save('post');
+        HTTP::save('post');
     }
     Guardian::kick(Path::D($url->current) . '#' . $anchor[1]);
 });

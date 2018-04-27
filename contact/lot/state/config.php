@@ -5,7 +5,7 @@ return [
     'topic' => '%{site.title}% · New Message',
     'anchor' => [1 => 'form-contact'],
     'path' => '-contact',
-    'page' => [
+    'contact' => [
         'type' => 'HTML'
     ],
     'max' => [
