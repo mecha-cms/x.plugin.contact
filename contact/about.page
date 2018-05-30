@@ -3,7 +3,7 @@ title: Contact
 description: Contact form.
 author: Taufik Nurrohman
 type: Markdown
-version: 2.2.0
+version: 2.3.0
 
 dependency:
   extension:

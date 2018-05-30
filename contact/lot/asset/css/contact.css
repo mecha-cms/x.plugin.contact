@@ -1,7 +1,4 @@
-.form-contact {
-  clear:both;
-  padding-bottom:.5em;
-}
+.form-contact {clear:both}
 .form-contact > p,
 .form-contact > .p {
   margin:1em 0 0;

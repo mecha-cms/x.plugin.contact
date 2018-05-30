@@ -1,16 +1,16 @@
 <?php
 
-Hook::set('asset:head', function($content) use($site) {
+Hook::set('shield.enter', function() use($site) {
     if ($site->is('page')) {
-        $o = array_replace([
-            'id' => Plugin::state('contact', 'anchor')[1]
-        ], (array) a(Config::get('page.o.js.CONTACT', [])));
-        return $content . '<script>window.CONTACT=' . json_encode($o) . ';</script>';
+        $s = __DIR__ . DS . 'lot' . DS . 'asset' . DS;
+        Asset::set($s . 'css' . DS . 'contact.min.css', 10);
+        Asset::set($s . 'js' . DS . 'contact.min.js', 10, [
+            'src' => function($src) {
+                return $src . '#' . Plugin::state('contact', 'anchor')[1];
+            }
+        ]);
     }
-    return $content;
-}, 9.9);
-
-Asset::set(__DIR__ . DS . 'lot' . DS . 'asset' . DS . 'css' . DS . 'contact.min.css');
+}, 0);
 
 function fn_block_contact($content) {
     return Block::replace('contact', function($a, $b, $c) {
@@ -23,6 +23,6 @@ function fn_block_contact($content) {
     }, $content);
 }
 
-Hook::set('shield.yield', 'fn_block_contact');
+Hook::set('shield.yield', 'fn_block_contact', 1);
 
 require __DIR__ . DS . 'lot' . DS . 'worker' . DS . 'worker' . DS . 'route.php';
